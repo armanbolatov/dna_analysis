@@ -2,7 +2,7 @@ import pandas as pd
 import PySimpleGUI as sg
 import restrictions as rst
 from messages import messages as msg
-from sequence_analysis import find_instances
+import sequence_analysis as seq
 
 sg.theme("DarkBlue3")
 sg.set_options(font=("Roboto", 10))
@@ -19,21 +19,41 @@ restrictions = {
 
 def get_nth_key(dictionary: dict, n=0) -> str:
     '''
-    Script which takes a dictionary and outputs a
+    Script which takes a dictionary and outputs
+    the key located in position n
     '''
     if n < 0: n += len(dictionary)
     for i, key in enumerate(dictionary.keys()):
         if i == n: return key
     raise IndexError("dictionary index out of range")
 
+def check_dna(dna: str) -> bool:
+    '''
+    Check if the user's input is a proper
+    DNA sequence
+    '''
+    for char in dna:
+        if char not in ['G', 'C', 'T', 'A']:
+            sg.Popup(msg['bad_dna'])
+            return False
+    if len(dna) % 3 != 0:
+        sg.Popup(msg['not_div_by_3'])
+        return False
+    return True
+
 def update_rest(base: str, name: str, restrictions: dict) -> bool:
     '''
-    Input:
+    Updates the restriction database. If user inputs
+    empty string into name field, then it deletes the base
+    from the database.
     '''
     for char in base:
         if char not in ['G', 'C', 'T', 'A']:
             sg.Popup(msg['bad_base'])
             return False
+    if len(base) > 8 or len(base) < 4:
+        sg.Popup(msg['bad_base_length'])
+        return False
     if name == '':
         if base not in restrictions:
             sg.Popup(msg['base_not_found'], base)
@@ -45,7 +65,9 @@ def update_rest(base: str, name: str, restrictions: dict) -> bool:
 
 def result_window(dna: str, result: str) -> None:
     layout =  [[sg.Text("New Window", key="new")],
-               [sg.Text(result, font=('Courier', 12), key='result')]]
+               [sg.Text(result, font=('Courier', 12), key='result')],
+               sg.Image(key='-IMAGE-')
+               ]
     window = sg.Window("Resulting DNA", size=(300, 200), modal=True).Layout(layout)
     choice = None
     while True:
@@ -59,6 +81,7 @@ def main_window(saved_dna=''):
     '''
 
     '''
+    dna = ''
     rest_bases, rest_names = [], []
     for key, value in restrictions.items():
         rest_bases.append(key)
