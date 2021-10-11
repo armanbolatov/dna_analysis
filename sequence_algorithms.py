@@ -8,17 +8,27 @@ def complement(dna: str) -> str:
         complement_dna += map[nucleotid]
     return complement_dna
 
-print(complement("AAAGGGGCT"))
-
 def find_instances(dna: str, restrictions: str):
     '''
     '''
-    app = []
+    app, app53, app35 = [], [], []
+    print
     for restriction in restrictions:
         base, name = restriction[0], restriction[1]
         for e in [m.start() for m in re.finditer(base, dna)]:
             app.append((e, base, name))
     app.sort()
+    print(app)
+    for item in app:
+        if item[2][0:5] == 'compl': app53.append(item)
+        else: app35.append(item)
+    print(app53, app35)
+
+    instances53 = fill_instances_array(dna, app53)
+    instances35 = fill_instances_array(dna, app35)
+    return instances53, instances35
+
+def fill_instances_array(dna: str, app: list):
     instances = [None] * len(dna)
     pos, j = 0, 0
     while pos < len(dna):
@@ -57,12 +67,8 @@ def remove_instances(dna: str, instances: list):
         if instances[i] is not None:
             acid = acids[i//3]
             for codon in acids_to_codons[acid]:
-                print(codon, instances[i])
                 if list(codon) != result_dna[i: i+3]:
-                    print('YES!')
-                    result_dna[i] = codon[0]
-                    result_dna[i+1] = codon[1]
-                    result_dna[i+2] = codon[2]
+                    for j in range(3): result_dna[i+j] = codon[j]
                     if instances[i-1] is not None:
                         for j in range(i-3, i):
                             instances[j] = None
@@ -70,17 +76,25 @@ def remove_instances(dna: str, instances: list):
                         for j in range(i+3, i+6):
                             instances[j] = None
     result_dna = ''.join(result_dna)
-    # return result_dna
-    if is_proper_dna(result_dna, restrictions):
-        return result_dna
-    else:
-        instances = find_instances(result_dna, restrictions)
-        return remove_instances(result_dna, instances)
+    return result_dna
 
-str = "GAATCGGGGGGGGGGGGGGGGGGGGGGGGGGGGTCTAGA"
+def find_positions(instances: list):
+    positions, i = dict(), 0
+    while i < len(instances):
+        if instances[i] is not None:
+            rest = instances[i]
+            if rest not in positions: positions[rest] = [i]
+            else: positions[rest].append(i)
+            i += len(rest[0])
+        else: i += 1
+    return positions
+
+
+str = "GAATCGGGGGGGGGGCTTAGGGGGGGGGGGGGGGGGTCTAGA"
 
 restrictions = [
     ('GAATC', 'EcoRI'),
+    ('CTTAG', 'compl_EcoRI'),
     ('TCTAGA', 'XbaI'),
     ('ACTAGT', 'SpeI'),
     ('CTGCAG', 'PstI'),
@@ -89,5 +103,7 @@ restrictions = [
     ('GGTCTC', 'BcaI')
 ]
 
-insta = find_instances(str, restrictions)
-print(remove_instances(str, insta))
+insta53, insta35 = find_instances(str, restrictions)
+print(remove_instances(str, insta53))
+
+print(find_positions([None, None, None, ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), None, None, None]))
