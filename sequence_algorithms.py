@@ -8,27 +8,18 @@ def complement(dna: str) -> str:
         complement_dna += map[nucleotid]
     return complement_dna
 
-def find_instances(dna: str, restrictions: str):
+def find_instances(dna: str, restrictions: str) -> list:
     '''
+    Input: a DNA sequence
+    Output: a list containing tuples of position, base sequence, and names
+    of the selected variables.
     '''
-    app, app53, app35 = [], [], []
-    print
+    app = []
     for restriction in restrictions:
         base, name = restriction[0], restriction[1]
         for e in [m.start() for m in re.finditer(base, dna)]:
             app.append((e, base, name))
     app.sort()
-    print(app)
-    for item in app:
-        if item[2][0:5] == 'compl': app53.append(item)
-        else: app35.append(item)
-    print(app53, app35)
-
-    instances53 = fill_instances_array(dna, app53)
-    instances35 = fill_instances_array(dna, app35)
-    return instances53, instances35
-
-def fill_instances_array(dna: str, app: list):
     instances = [None] * len(dna)
     pos, j = 0, 0
     while pos < len(dna):
@@ -50,8 +41,8 @@ def is_proper_dna(dna: str, restrictions: list):
 
 def convert_to_acids(dna: str) -> list:
     '''
-    Takes a DNA sequence and converts it to sequence
-    of aminoacids.
+    Input: a DNA sequence
+    Output: a sequence of aminoacids
     '''
     acids = []
     for i in range(0, len(dna), 3):
@@ -60,7 +51,7 @@ def convert_to_acids(dna: str) -> list:
         acids.append(codons_to_acids[codon])
     return acids
 
-def remove_instances(dna: str, instances: list):
+def remove_instances(dna: str, instances: list) -> str:
     result_dna = list(dna)
     acids = convert_to_acids(dna)
     for i in range(0, len(dna), 3):
@@ -89,7 +80,6 @@ def find_positions(instances: list):
         else: i += 1
     return positions
 
-
 str = "GAATCGGGGGGGGGGCTTAGGGGGGGGGGGGGGGGGTCTAGA"
 
 restrictions = [
@@ -103,7 +93,7 @@ restrictions = [
     ('GGTCTC', 'BcaI')
 ]
 
-insta53, insta35 = find_instances(str, restrictions)
-print(remove_instances(str, insta53))
+insta = find_instances(str, restrictions)
+print(remove_instances(str, insta))
 
-print(find_positions([None, None, None, ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), None, None, None]))
+# print(find_positions([None, None, None, ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), ('GAATC', 'EcoRI'), None, None, None]))
