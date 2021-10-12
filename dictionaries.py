@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 11 11:25:49 2021
-
-@author: Darina
-"""
-
 acids_to_codons =  {'A': ['GCT', 'GCC', 'GCA', 'GCG'],
                     'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'],
                     'N': ['AAT', 'AAC'],

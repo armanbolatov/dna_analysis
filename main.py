@@ -10,8 +10,8 @@ sg.set_options(font=("Roboto", 12))
 
 def get_nth_key(dictionary: dict, n=0) -> str:
     '''
-    Script which takes a dictionary and outputs the key
-    located in position n.
+    Input: a dictionary
+    Output: a key located at postiton n
     '''
     if n < 0: n += len(dictionary)
     for i, key in enumerate(dictionary.keys()):
@@ -20,33 +20,38 @@ def get_nth_key(dictionary: dict, n=0) -> str:
 
 def check_dna(dna: str) -> bool:
     '''
-    Check if the user's input is a proper DNA sequence
+    Input: a DNA sequence
+    Output: a bool inicating if the user's input is a proper DNA sequence
     '''
+    if len(dna) == 0:
+        sg.Popup('Error!', msg['empty_dna'])
+        return False
     for char in dna:
         if char not in ['G', 'C', 'T', 'A']:
-            sg.Popup(msg['bad_dna'])
+            sg.Popup('Error!', msg['bad_dna'])
             return False
     if len(dna) % 3 != 0:
-        sg.Popup(msg['not_div_by_3'])
+        sg.Popup('Error!', msg['not_div_by_3'])
         return False
     return True
 
 def update_rest(base: str, name: str, restrictions: dict) -> bool:
     '''
-    Updates the restriction database. If user inputs
-    empty string into name field, then it deletes the base
+    Input: a restriction site
+    Output: a bool which checks whether updates the restriction database.
+    If user inputs empty string into name field, then it deletes the base
     from the database.
     '''
     for char in base:
         if char not in ['G', 'C', 'T', 'A']:
-            sg.Popup(msg['bad_base'])
+            sg.Popup('Error!', msg['bad_base'])
             return False
     if len(base) > 8 or len(base) < 4:
-        sg.Popup(msg['bad_base_length'])
+        sg.Popup('Error!', msg['bad_base_length'])
         return False
     if name == '':
         if base not in restrictions:
-            sg.Popup(msg['base_not_found'], base)
+            sg.Popup('Error!', msg['base_not_found'], base)
             return False
         del restrictions[base]
     else: restrictions[base] = name
@@ -54,7 +59,9 @@ def update_rest(base: str, name: str, restrictions: dict) -> bool:
 
 def main_window(saved_dna=''):
     '''
-
+    Input: a DNA sequence
+    Output: main window of the program with the given DNA sequence
+    in its first field
     '''
     dna, rest_bases, rest_names = '', [], []
     for key, value in restrictions.items():
@@ -66,9 +73,10 @@ def main_window(saved_dna=''):
     headings = list(headers)
     values = table.values.tolist()
 
-    layout =  [[sg.T('DNA sequence'),sg.In(default_text=saved_dna, size=(30,1), key='dna'),
-                sg.Button('Run'),
-                sg.Button('Help')],
+    layout =  [[sg.T('DNA sequence'),sg.In(default_text=saved_dna,
+                                           size=(30,1),
+                                           key='dna'),
+                sg.Button('Run it', key='run')],
                [sg.Table(values=values,
                          headings=headings,
                          auto_size_columns=False,
@@ -77,12 +85,16 @@ def main_window(saved_dna=''):
                          enable_events=True,
                          key='-TABLE-',
                          col_widths=[20, 20])],
-                [sg.T('Restr. base'),sg.In(default_text='', size=(10,1), key='rest_base'),
-                 sg.T('Restr. name'),sg.In(default_text='', size=(10,1), key='rest_name'),
-                 sg.Button('Add restriction', key='add_rest')],
-                [sg.Button('Exit', button_color=('white', 'firebrick3'))]]
+                [sg.T('Base'),sg.In(default_text='',
+                                    size=(10,1),
+                                    key='rest_base'),
+                 sg.T('Name'),sg.In(default_text='',
+                                    size=(10,1),
+                                    key='rest_name'),
+                 sg.Button('Add restriction', key='add_rest'),
+                 sg.Button('Exit', button_color=('white', 'firebrick3'))]]
 
-    window = sg.Window('iGEM',
+    window = sg.Window('DNA sequence analyzer',
                         text_justification='r',
                         default_element_size=(15,1)).Layout(layout)
 
@@ -95,7 +107,7 @@ def main_window(saved_dna=''):
         event, values = window.Read()
         if event in ('Exit', None):
             break           # exit button clicked
-        if event == 'Run' and check_dna(values['dna']):
+        if event == 'run' and check_dna(values['dna']):
             dna = values['dna']
             result.result_window(dna, selected_items)
         elif event == '-TABLE-':
@@ -115,7 +127,6 @@ def main_window(saved_dna=''):
                     print(selected_items)
             else:
                 user_click = True
-
         elif event == 'add_rest':
             if update_rest(values['rest_base'],
                            values['rest_name'],

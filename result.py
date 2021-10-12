@@ -8,16 +8,22 @@ sg.theme("DarkBlue3")
 sg.set_options(font=("Roboto", 12))
 
 def result_window(dna: str, selected_items: list) -> None:
-
+    '''
+    Input: a DNA sequence, list indicating which restriction sites a user
+    had choosed
+    Output: the window containing the result information
+    '''
     instances = seq.find_instances(dna, selected_items)
     positions = seq.find_positions(instances)
-    result53 = "In the 5'-3' DNA sequence there are following restrictions.\n\n"
-    result35 = "In the 3'-5' DNA sequence there are following restrictions.\n\n"
+    result53 =  "In the forward strand (5'-3') of the DNA sequence there are" + \
+                "following restriction sites.\n\n"
+    result35 =  "In the reversed strand (3'-5') of the DNA sequence there are" + \
+                "following restriction sites.\n\n"
     result_dna = seq.remove_instances(dna, instances)
     print(positions)
     if not bool(positions):
-        result53 = "There are no restriction sites in the 3'-5' of the given DNA."
-        result35 = "There are no restriction sites in the 3'-5' of the given DNA."
+        result53 = "There are no restriction sites in the forward strand of the given DNA."
+        result35 = "There are no restriction sites in the reversed strand of the given DNA."
     for key, values in positions.items():
         values = ", ".join(map(str, values))
         result53 += key[0] + " named as " + \
@@ -36,8 +42,8 @@ def result_window(dna: str, selected_items: list) -> None:
                                 "Please close this window, select the restrictions " + \
                                 "you are interested in, and run the program."
 
-    layout =  [[sg.Text("The given DNA sequence in 5'-3' is " + \
-                        dna + " and in 3'-5' is " + seq.complement(dna) + \
+    layout =  [[sg.Text("The forward strand of given DNA sequence is " + \
+                        dna + " and reversed one is " + seq.complement(dna) + \
                         "\n\n" + selected_restrictions,
                         expand_y=True,
                         expand_x=True,
@@ -55,7 +61,8 @@ def result_window(dna: str, selected_items: list) -> None:
                              key='result53',
                              size=(37, 6),
                              disabled=True)],
-                [sg.Text("After deleting the")],
+                [sg.Text("The DNA sequences resulting after hiding the" + \
+                         "selected restrictions:")],
                 [sg.Multiline("(5\' 🠒 3\'): " + result_dna + "\n\n(3\' 🠒 5\'): " + \
                               seq.complement(result_dna),
                               background_color='#64778D',
