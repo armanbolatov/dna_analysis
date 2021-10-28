@@ -1,6 +1,15 @@
 # DNA Sequence Analysis & Removal of Restriction Sites
 
-This is a solution of team NULL 404 (Arman Bolatov, Daniil Filimonov, Polina Rakhalskaya, Darina Mukhamejanova) for BioHackathon 2021 organized by IGEM.
+This is a solution of team NULL 404 (Arman Bolatov, Daniil Filimonov, Polina Rakhalskaya, Darina Mukhamejanova) for [BioHackathon 2021](http://code-on.info/) organized by IGEM.
+
+## Table of contents
+
+  * [Problem statement](#problem-statement)
+  * [Technologies](#technologies)
+  * [Key features](#key-features)
+  * [Project structure](#project-structure)
+  * [How to use](#how-to-use)
+  * [Naming conventions](#naming-conventions)
 
 ## Problem statement
 
@@ -46,55 +55,60 @@ The task is:
 - Indicated are only few examples of restriction enzymes, try to make your algorithm useful for any researcher if they wish to "hide" their restriction enzymes.
 - Think about other ways you can make your project of use for researchers.
 
-## Approach & Key features
+## Technologies
 
-1. The main feature of this program is that it not only determines the precise location of prohibited restriction sites according to IGEM standards, but also allows the user to hide these sites by altering the minimum number of nucleotides.
+Project is created with:
+* Python version: 3.7
+* [PySimpleGUI](https://pypi.org/project/PySimpleGUI/) version: 4.51.6
+* Pandas version: 1.3.4
 
-2. The algorithms are versatile and adaptable, so the researcher may add new restriction sites into the database and/or delete previous ones, so we are not limited with those provided by default.
+## Key features
 
-3. An intuitive interface visually shows the restriction sites within the DNA sequence and annotates the precise name and position of the restriction site.
+1. The main feature of this program is that it not only determines the precise location of prohibited restriction sites according to IGEM standards, but also allows the user to hide these sites by altering the **minimum number** of nucleotides.
 
-4. While the user enters DNA sequence for 5’-3’ direction, they receive the similar data output for the second strand with reversed direction.
+2. The algorithms are versatile and adaptable, so the researcher may **add new restriction sites** into the database and/or **delete previous ones**, so we are not limited with those provided by default.
 
-5. The program makes sure that DNA alteration is similar to silent mutation and amino acids sequence encoded in coding frame remains the same.
+3. An intuitive interface visually shows the restriction sites within the DNA sequence and annotates the precise **name and position** of the restriction site.
 
-6. Works perfectly for a bacterial genome.
+4. While the user enters DNA sequence for 5’-3’ direction, they receive the similar data output for the **second strand** with reversed direction.
+
+5. The program makes sure that DNA alteration is similar to **silent mutation** and amino acids sequence encoded in coding frame remains the same.
+
+6. Works perfectly for all **bacterial genomes**.
 
 ## Project structure
 
     .
-    ├── dictionaries.py              # A module containing dictionaries for converting amino-acids to codons and vice-versa.
-    ├── main.py                      # The main window with user input fields
+    ├── dictionaries.py              # Dictionaries for converting amino-acids to codons and vice-versa
+    ├── main.py                      # The main window with input fields
     ├── messages.py                  # Texts of error messages
-    ├── restrictions.py              # Dictionary mapping restrictions base sequences to their names
-    ├── result.py                    # The result window containing the program output
-    ├── sequence_algorithms.py       # Module with algorithms to solve the problem
+    ├── restrictions.py              # The dictionary which maps restrictions base sequences to their names
+    ├── result.py                    # The result window with the program output
+    ├── sequence_algorithms.py       # Algorithms to analyze DNA strands and hide restriction sites
+    ├── presentation.pdf             # PDF document with instructions
     ├── __pycache__                  # Folder containing cached files
     └── README.md
 
 ## How to use
 
-To clone and run this program, you'll need [Git](https://git-scm.com) and [Python](https://www.python.org/) with [PySimpleGUI](https://pypi.org/project/PySimpleGUI/) installed on your computer. From your command line:
+To clone and run this program, you'll need [Git](https://git-scm.com) and [Python](https://www.python.org/) installed on your computer. From your command line:
 
 ```bash
 # Install PySimpleGUI (you should have pip)
 $ pip install PySimpleGUI
 # Clone this repository
-$ git clone https://github.com/amitmerchant1990/pomolectron
+$ git clone https://github.com/armanbolatov/DNA-Sequence-Analysis
 # Go into the repository
-$ cd pomolectron
+$ cd DNA-Sequence-Analysis
 # Run the program
 $ python main.py
 ```
 
-In this [presentation.pdf](presentation.pdf) file in this directory you can find further details on how to use the program properly.
-
-
+In this [presentation](presentation.pdf) you can find further details on how to use the program properly.
 
 ## Naming conventions
-Here naming conventions should be described
 
-Data Sources:
+Here naming conventions should be described:
 
-1. Amino Acids. Source: http://www.hgmd.cf.ac.uk/docs/cd_amino.html
-2. Restriction Sites (from 5' to 3'). Source: http://rebase.neb.com/rebase/link_bairochc
+1. Amino Acids. Source: [www.hgmd.cf.ac.uk](http://www.hgmd.cf.ac.uk/docs/cd_amino.html)
+2. Restriction Sites (from 5' to 3'). Source: [www.sciencedirect.com](https://www.sciencedirect.com/topics/immunology-and-microbiology/restriction-site#:~:text=A%20restriction%20site%20is%20a,by%20cleaving%20the%20viral%20DNA.)
