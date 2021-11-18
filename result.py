@@ -70,7 +70,7 @@ def result_window(dna: str, selected_items: list) -> None:
                              key='result35',
                              size=(37, 6),
                              disabled=True)],
-                [sg.Text("The DNA sequences resulting after hiding the" + \
+                [sg.Text("The DNA sequences resulting after hiding the " + \
                          "selected restrictions:")],
                 [sg.Multiline("(5\' - 3\'): " + result_dna + "\n\n(3\' - 5\'): " + \
                               seq.complement(result_dna),
