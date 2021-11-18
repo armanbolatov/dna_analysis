@@ -1,3 +1,5 @@
+import pickle
+
 restrictions = {'GAATTC': 'EcoRI',
                 'TCTAGA': 'XbaI',
                 'ACTAGT': 'SpeI',
@@ -5,3 +7,7 @@ restrictions = {'GAATTC': 'EcoRI',
                 'GCGGCCGC': 'NotI',
                 'GCTCTTC': 'SapI',
                 'GGTCTC': 'BsaI'}
+
+pickle_out = open('restrictions.pickle', 'wb')
+pickle.dump(restrictions, pickle_out)
+pickle_out.close()

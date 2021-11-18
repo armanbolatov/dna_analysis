@@ -1,0 +1,7 @@
+In the field "DNA sequence", enter the DNA sequence for analysis. The input sequence should be a coding region in 5'-3' direction.
+
+To run the program, select restriction sites you want to remove from the table below and press the "Run" button. The resulting output identifies the prohibited restriction sites within the given DNA sequence and names their precise position. Also, the program presents similar data for the reversed (3'-5') strand.
+
+In order to add a new restriction site into the table, write site's base and name in the fields below. If you want to rename the restriction site, write the base of that site and name you want to rename. If you want to delete a site, write its base but leave the name field empty. Then press the "Add restriction" button.
+
+Note: in the menu's table, the light blue sites will remain unchanged; the dark blue sites will be hidden.

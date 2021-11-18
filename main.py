@@ -1,22 +1,16 @@
 import pandas as pd
+import pickle
 import PySimpleGUI as sg
 import sequence_algorithms as seq
 import result
-from restrictions import restrictions
+import help
 from messages import messages as msg
+
+pickle_in = open('restrictions.pickle', 'rb')
+restrictions = pickle.load(pickle_in)
 
 sg.theme("DarkBlue3")
 sg.set_options(font=("Roboto", 12))
-
-def get_nth_key(dictionary: dict, n=0) -> str:
-    '''
-    Input: a dictionary
-    Output: a key located at postiton n
-    '''
-    if n < 0: n += len(dictionary)
-    for i, key in enumerate(dictionary.keys()):
-        if i == n: return key
-    raise IndexError("dictionary index out of range")
 
 def check_dna(dna: str) -> bool:
     '''
@@ -54,7 +48,11 @@ def update_rest(base: str, name: str, restrictions: dict) -> bool:
             sg.Popup('Error!', msg['base_not_found'], base)
             return False
         del restrictions[base]
-    else: restrictions[base] = name
+    else:
+        restrictions[base] = name
+    pickle_out = open('restrictions.pickle', 'wb')
+    pickle.dump(restrictions, pickle_out)
+    pickle_out.close()
     return True
 
 def main_window(saved_dna=''):
@@ -67,16 +65,17 @@ def main_window(saved_dna=''):
     for key, value in restrictions.items():
         rest_bases.append(key)
         rest_names.append(value)
-    headers = {'Base sequences (5\' 🠒 3\')' : rest_bases,
+    headers = {'Base sequences (5\' - 3\')' : rest_bases,
                'Restriction site name': rest_names}
     table = pd.DataFrame(headers)
     headings = list(headers)
     values = table.values.tolist()
 
     layout =  [[sg.T('DNA sequence'),sg.In(default_text=saved_dna,
-                                           size=(30,1),
+                                           size=(28,1),
                                            key='dna'),
-                sg.Button('Run it', key='run')],
+                sg.Button('Run', key='run'),
+                sg.Button('Help', key='help')],
                [sg.Table(values=values,
                          headings=headings,
                          auto_size_columns=False,
@@ -84,7 +83,7 @@ def main_window(saved_dna=''):
                          select_mode=sg.TABLE_SELECT_MODE_EXTENDED,
                          enable_events=True,
                          key='-TABLE-',
-                         col_widths=[20, 20])],
+                         col_widths=[20, 18])],
                 [sg.T('Base'),sg.In(default_text='',
                                     size=(10,1),
                                     key='rest_base'),
@@ -106,15 +105,17 @@ def main_window(saved_dna=''):
     while True:
         event, values = window.Read()
         if event in ('Exit', None):
-            break           # exit button clicked
+            break
         if event == 'run' and check_dna(values['dna']):
             dna = values['dna']
             result.result_window(dna, selected_items)
+        if event == 'help':
+            help.help_window()
         elif event == '-TABLE-':
             if user_click:
                 if len(values['-TABLE-']) == 1:
                     select = values['-TABLE-'][0]
-                    base = get_nth_key(restrictions, select)
+                    base = seq.get_nth_key(restrictions, select)
                     item = (base, restrictions[base])
                     if select in selected_indicies:
                         selected_indicies.remove(select)
@@ -124,7 +125,6 @@ def main_window(saved_dna=''):
                         selected_items.append(item)
                     table.update(select_rows=selected_indicies)
                     user_click = False
-                    print(selected_items)
             else:
                 user_click = True
         elif event == 'add_rest':

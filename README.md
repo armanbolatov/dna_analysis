@@ -66,7 +66,7 @@ Project is created with:
 
 1. The main feature of this program is that it not only determines the precise location of prohibited restriction sites according to IGEM standards, but also allows the user to hide these sites by altering the **minimum number** of nucleotides.
 
-2. The algorithms are versatile and adaptable, so the researcher may **add new restriction sites** into the database and/or **delete previous ones**, so we are not limited with those provided by default.
+2. The algorithms are versatile and adaptable, so the researcher may **add new restriction sites** into the table and/or **delete previous ones**, so we are not limited with those provided by default.
 
 3. An intuitive interface visually shows the restriction sites within the DNA sequence and annotates the precise **name and position** of the restriction site.
 
@@ -80,12 +80,14 @@ Project is created with:
 
     .
     ├── dictionaries.py              # Dictionaries for converting amino-acids to codons and vice-versa
+    ├── help_text.txt                # The text of the help window
+    ├── help.py                      # The help window with instructions
+    ├── init_rest.py                 # A script that creates a pickle file with restriction sites
     ├── main.py                      # The main window with input fields
     ├── messages.py                  # Texts of error messages
-    ├── restrictions.py              # The dictionary which maps restrictions base sequences to their names
+    ├── restrictions.pickle          # A pickle file with the dictionary of restriction sites
     ├── result.py                    # The result window with the program output
     ├── sequence_algorithms.py       # Algorithms to analyze DNA strands and hide restriction sites
-    ├── presentation.pdf             # PDF document with instructions
     ├── __pycache__                  # Folder containing cached files
     └── README.md
 
@@ -96,6 +98,8 @@ To clone and run this program, you'll need [Git](https://git-scm.com) and [Pytho
 ```bash
 # Install PySimpleGUI (you should have pip)
 $ pip install PySimpleGUI
+# Install pandas
+$ pip install pandas
 # Clone this repository
 $ git clone https://github.com/armanbolatov/DNA-Sequence-Analysis
 # Go into the repository
@@ -104,7 +108,7 @@ $ cd DNA-Sequence-Analysis
 $ python main.py
 ```
 
-In this [presentation](presentation.pdf) you can find further details on how to use the program properly.
+By clicking the "Help" button you can find further details on how to use the program properly.
 
 ## Naming conventions
 
