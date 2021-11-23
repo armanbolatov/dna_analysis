@@ -72,35 +72,23 @@ def main_window(saved_dna=''):
     values = table.values.tolist()
 
     layout =  [[sg.T('DNA sequence'),sg.In(default_text=saved_dna,
-                                           size=(28,1),
-                                           key='dna'),
+                                           size=(28,1), key='dna'),
                 sg.Button('Run', key='run'),
                 sg.Button('Help', key='help')],
-               [sg.Table(values=values,
-                         headings=headings,
-                         auto_size_columns=False,
-                         display_row_numbers=True,
+               [sg.Table(values=values, headings=headings,
+                         auto_size_columns=False, display_row_numbers=True,
                          select_mode=sg.TABLE_SELECT_MODE_EXTENDED,
-                         enable_events=True,
-                         key='-TABLE-',
-                         col_widths=[20, 18])],
-                [sg.T('Base'),sg.In(default_text='',
-                                    size=(10,1),
-                                    key='rest_base'),
-                 sg.T('Name'),sg.In(default_text='',
-                                    size=(10,1),
-                                    key='rest_name'),
+                         enable_events=True, key='-TABLE-', col_widths=[20, 18])],
+                [sg.T('Base'),sg.In(default_text='', size=(10,1), key='rest_base'),
+                 sg.T('Name'),sg.In(default_text='', size=(10,1), key='rest_name'),
                  sg.Button('Add restriction', key='add_rest'),
                  sg.Button('Exit', button_color=('white', 'firebrick3'))]]
 
-    window = sg.Window('DNA sequence analyzer',
-                        text_justification='r',
+    window = sg.Window('DNA sequence analyzer', text_justification='r',
                         default_element_size=(15,1)).Layout(layout)
 
-    table = window['-TABLE-']
-    user_click = True
-    selected_indicies = []
-    selected_items = []
+    table, user_click = window['-TABLE-'], True
+    selected_indicies, selected_items = [], []
 
     while True:
         event, values = window.Read()
@@ -128,9 +116,7 @@ def main_window(saved_dna=''):
             else:
                 user_click = True
         elif event == 'add_rest':
-            if update_rest(values['rest_base'],
-                           values['rest_name'],
-                           restrictions):
+            if update_rest(values['rest_base'], values['rest_name'], restrictions):
                 window.close()
                 main_window(saved_dna=dna)
 
