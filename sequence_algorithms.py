@@ -92,8 +92,8 @@ def find_positions(instances: list) -> dict:
         if instances[i] is not None:
             rest = instances[i]
             if rest not in positions:
-                positions[rest] = [i]
-            else: positions[rest].append(i)
+                positions[rest] = [i + 1]
+            else: positions[rest].append(i + 1)
             i += len(rest[0])
         else: i += 1
     return positions
