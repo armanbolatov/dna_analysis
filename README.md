@@ -101,7 +101,7 @@ $ pip install PySimpleGUI
 # Install pandas
 $ pip install pandas
 # Clone this repository
-$ git clone https://github.com/armanbolatov/DNA-Sequence-Analysis
+$ git clone https://github.com/armanbolatov/dna_analysis
 # Go into the repository
 $ cd DNA-Sequence-Analysis
 # Run the program
