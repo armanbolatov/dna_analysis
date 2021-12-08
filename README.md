@@ -79,16 +79,17 @@ Project is created with:
 ## Project structure
 
     .
-    ├── dictionaries.py              # Dictionaries for converting amino-acids to codons and vice-versa
+    ├── __pycache__                  # Cached files
+    ├── dictionaries.py              # Converts amino-acids to codons and vice-versa
     ├── help_text.txt                # The text of the help window
     ├── help.py                      # The help window with instructions
-    ├── init_rest.py                 # A script that creates a pickle file with restriction sites
+    ├── init_rest.py                 # Initializes a pickle file with restriction sites
     ├── main.py                      # The main window with input fields
     ├── messages.py                  # Texts of error messages
-    ├── restrictions.pickle          # A pickle file with the dictionary of restriction sites
+    ├── requirements.txt             # A list of dependencies
+    ├── restrictions.pickle          # The dictionary of restriction sites
     ├── result.py                    # The result window with the program output
     ├── sequence_algorithms.py       # Algorithms to analyze DNA strands and hide restriction sites
-    ├── __pycache__                  # Folder containing cached files
     └── README.md
 
 ## How to use
@@ -96,14 +97,12 @@ Project is created with:
 To clone and run this program, you'll need [Git](https://git-scm.com) and [Python](https://www.python.org/) installed on your computer. From your command line:
 
 ```bash
-# Install PySimpleGUI (you should have pip)
-$ pip install PySimpleGUI
-# Install pandas
-$ pip install pandas
 # Clone this repository
 $ git clone https://github.com/armanbolatov/dna_analysis
 # Go into the repository
-$ cd DNA-Sequence-Analysis
+$ cd dna_analysis
+# Install the dependencies
+$ pip install -r requirements.txt
 # Run the program
 $ python main.py
 ```
