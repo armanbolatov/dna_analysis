@@ -79,7 +79,6 @@ Project is created with:
 ## Project structure
 
     .
-    ├── __pycache__                  # Cached files
     ├── dictionaries.py              # Converts amino-acids to codons and vice-versa
     ├── help_text.txt                # The text of the help window
     ├── help.py                      # The help window with instructions
